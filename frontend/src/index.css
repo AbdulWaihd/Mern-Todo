@@ -1,0 +1,162 @@
+/* ---------- Global Reset ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: #f8f6f4; /* Light beige background */
+  color: #2d2d2d;
+  min-height: 100vh;
+}
+
+/* ---------- Page Wrapper ---------- */
+.pages {
+  padding: 24px 32px;
+}
+
+/* ---------- Todo List & Form Layout ---------- */
+.todo-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+/* ---------- Todo List ---------- */
+.todo-list {
+  width: 55%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+}
+
+.todo-list ul {
+  list-style: none;
+  margin-top: 12px;
+}
+
+.todo-list li {
+  padding: 10px;
+  border-bottom: 1px solid #e6e6e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todo-list li:last-child {
+  border-bottom: none;
+}
+
+button svg:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+/* ---------- Add Todo Form ---------- */
+.todo-form {
+  width: 40%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+}
+
+.todo-form input,
+.todo-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+}
+
+.todo-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #e44232;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.todo-form button:hover {
+  opacity: 0.9;
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* ================= Auth Pages ================= */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  background-color: #f4f6f9;
+}
+
+.auth-box {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 10px;
+  width: 350px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.auth-box h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #e44232;
+}
+
+.auth-box label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.auth-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-box button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #e44232;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.auth-box button:hover {
+  background-color: #c53428;
+}
+
+.auth-error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.auth-success {
+  color: green;
+  text-align: center;
+  margin-top: 10px;
+}

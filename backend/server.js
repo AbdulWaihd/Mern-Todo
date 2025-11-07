@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:5173',
-      'https://mern-todo-2sa4.vercel.app'
+      "https://mern-todo-tg1e.vercel.app"
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

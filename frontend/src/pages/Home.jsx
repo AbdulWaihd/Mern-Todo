@@ -3,12 +3,15 @@ import { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import { useAuthContext } from "../hooks/useAuthContext";
 
+
 export default function Home() {
     const [todos, setTodos] = useState([]);
     const { user } = useAuthContext();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [sortBy, setSortBy] = useState("priority");
+    const BASE_URL = import.meta.env.VITE_API_URL;
+
 
     // Fetch all todos
     useEffect(() => {
@@ -17,7 +20,7 @@ export default function Home() {
 
             setLoading(true);
             try {
-                const response = await fetch("/api/todos", {
+                const response = await fetch(`${BASE_URL}/api/todos`, {
                     headers: { Authorization: `Bearer ${user.token}` },
                 });
                 if (!response.ok) throw new Error("Unauthorized or Failed to fetch todos");
@@ -31,7 +34,7 @@ export default function Home() {
         };
 
         fetchTodos();
-    }, [user]);
+    }, [user,BASE_URL]);
 
     // Add a Todo
     const handleSubmit = async (e) => {

@@ -14,7 +14,8 @@ const port = process.env.PORT || 4000;
 const allowedOrigins = [
   "http://localhost:5173",
   "https://mern-todo-tg1e.vercel.app",
-  "https://mern-todo-2sa4.vercel.app"
+  "https://mern-todo-2sa4.vercel.app",
+  "https://mern-todo-ten-gamma.vercel.app"
 ];
 
 app.use(

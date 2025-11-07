@@ -16,17 +16,18 @@ app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
-// Protect Todos API
+// Protected Todos API
 app.use('/api/todos', requireAuth, todoRoutes);
 
-//  Public Routes (Signup & Login)
+// Public Routes (Signup & Login)
 app.use('/api/user', userRoutes);
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose
+  .connect(process.env.MONGO_URI) //  make sure it matches your Render env var
   .then(() => {
     console.log(' MongoDB connected');
     app.listen(port, () => {
-      console.log(` Server running at http://localhost:${port}`);
+      console.log(`🚀 Server running on port ${port}`);
     });
   })
-  .catch((err) => console.error(' MongoDB failed:', err.message));
+  .catch((err) => console.error('❌ MongoDB failed:', err.message));

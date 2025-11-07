@@ -1,102 +1,90 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 
-
 export default function SignUp() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
-    const navigate = useNavigate();
-    const BASE_URL = import.meta.env.VITE_API_URL;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { dispatch } = useAuthContext();
+  const navigate = useNavigate();
 
-    const { dispatch } = useAuthContext();
+  const BASE_URL = import.meta.env.VITE_API_URL;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setError(null);
-        setSuccess(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    setIsLoading(true);
 
     try {
-        // make a post request to backend
-        const response = await fetch(`${BASE_URL}/api/todos/signup`, {
-            method: "POST",
-            body: JSON.stringify({ username, email, password }),
-            headers: { "Content-Type": "application/json" },
-        });
+      const response = await fetch(`${BASE_URL}/api/user/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-        const data = await response.json();
+      const text = await response.text();
+      let data = null;
+      try {
+        data = text ? JSON.parse(text) : null;
+      } catch (err) {
+        console.warn("Failed to parse JSON:", err);
+      }
 
-        if (!response.ok) {
-            setError(data.error||"Signup failed");
-            setIsLoading(false);
-            return ;
-        } 
-        // save the user to localStorage
-        localStorage.setItem("user", JSON.stringify(data));
-        // update the auth context
-        dispatch({ type: "LOGIN", payload: data });
+      if (!response.ok) {
+        setError(data?.error || "Signup failed");
         setIsLoading(false);
-        setSuccess("Signup successful! You can now log in.");
+        return;
+      }
 
-        navigate("/login");
+      localStorage.setItem("user", JSON.stringify(data));
+      dispatch({ type: "LOGIN", payload: data });
+      setSuccess("Signup successful!");
+      setIsLoading(false);
+      navigate("/");
+    } catch (err) {
+      console.error("Signup error:", err);
+      setError("Network error. Please try again.");
+      setIsLoading(false);
     }
-    catch (err) {
-        setError("An error occurred. Please try again.");
-        setIsLoading(false);   
-        console.error(err); 
-    }
-    
-    };
+  };
 
-    return (
-        <div className="auth-container">
-            <div className="auth-box">
-                <h2>Signup</h2>
+  return (
+    <div className="auth-container">
+      <div className="auth-box">
+        <h2>Sign Up</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label>Username</label>
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
-                    </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-                    <div className="form-group">
-                        <label>Email</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
+          <button disabled={isLoading} type="submit" className="btn-auth">
+            {isLoading ? "Signing up..." : "Sign Up"}
+          </button>
 
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <button disabled={isLoading} type="submit" className="btn-auth">
-                        {isLoading ? "Signing up..." : "Sign Up"}
-                    </button>
-
-                    {error && <p className="auth-error">{error}</p>}
-                    {success && <p className="auth-success">{success}</p>}
-                </form>
-            </div>
-        </div>
-    );
+          {error && <p className="auth-error">{error}</p>}
+          {success && <p className="auth-success">{success}</p>}
+        </form>
+      </div>
+    </div>
+  );
 }

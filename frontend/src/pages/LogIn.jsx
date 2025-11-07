@@ -9,6 +9,7 @@ export default function LogIn() {
     const [isLoading, setIsLoading] = useState(false);
     const { dispatch } = useAuthContext();  
     const navigate = useNavigate();
+    const BASE_URL = import.meta.env.VITE_API_URL;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,7 +19,7 @@ export default function LogIn() {
         setIsLoading(true);
 
         try {
-            const response = await fetch("/api/user/login", {
+            const response = await fetch(`${BASE_URL}/api/todos/login`, {
                 method: "POST",
                 body: JSON.stringify({ email, password }),
                 headers: {

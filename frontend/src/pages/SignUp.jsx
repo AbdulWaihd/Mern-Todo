@@ -11,6 +11,7 @@ export default function SignUp() {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const navigate = useNavigate();
+    const BASE_URL = import.meta.env.VITE_API_URL;
 
     const { dispatch } = useAuthContext();
 
@@ -22,7 +23,7 @@ export default function SignUp() {
 
     try {
         // make a post request to backend
-        const response = await fetch("/api/user/signup", {
+        const response = await fetch(`${BASE_URL}/api/todos/signup`, {
             method: "POST",
             body: JSON.stringify({ username, email, password }),
             headers: { "Content-Type": "application/json" },

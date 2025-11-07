@@ -2,12 +2,13 @@ const Todo = require('../models/todoModel');
 
 //  Add Todo
 const createTodo = async (req, res) => {
-    const { title, description, priority } = req.body;
+    const { title, description, priority ,dueDate} = req.body;
     try {
         const todo = await Todo.create({
             title,
             description,
             priority,
+            dueDate,
             userId: req.user._id // attach user from token
         });
 

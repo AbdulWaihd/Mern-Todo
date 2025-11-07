@@ -15,7 +15,8 @@ const todoSchema = new Schema({
     default: false
   },
   dueDate: {
-    type: Date
+    type: Date,
+    required:true
   },
   priority: {
     type: String,

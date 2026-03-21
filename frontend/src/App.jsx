@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import "./index.css";
 import Signup from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
+import ForgotPassword from "./pages/ForgotPassword";
 import { useAuthContext } from "./hooks/useAuthContext";
 import"./index.css";
 function App() {
@@ -25,6 +26,10 @@ function App() {
           <Route
             path="/signup"
             element={!user ? <Signup /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/forgot-password"
+            element={!user ? <ForgotPassword /> : <Navigate to="/" />}
           />
         </Routes>
       </div>

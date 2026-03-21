@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function LogIn() {
   const [email, setEmail] = useState("");
@@ -75,6 +75,10 @@ export default function LogIn() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+          </div>
+
+          <div className="fp-link-wrapper">
+            <Link to="/forgot-password" className="fp-link">Forgot Password?</Link>
           </div>
 
           <button disabled={isLoading} type="submit" className="btn-auth">

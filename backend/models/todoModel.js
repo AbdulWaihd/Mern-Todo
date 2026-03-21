@@ -36,6 +36,18 @@ const todoSchema = new Schema({
     type: Boolean,
     default: false
   },
+  goalTitle: {
+    type: String,
+    default: null
+  },
+  estimatedTime: {
+    type: String,
+    default: null
+  },
+  isAIGenerated: {
+    type: Boolean,
+    default: false
+  },
   reminderAt: {
     type: Date
   }

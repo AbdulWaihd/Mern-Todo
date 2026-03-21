@@ -36,6 +36,9 @@ export default function Navbar() {
 
         {user && (
           <>
+            <Link to="/ai-planner" className="navbar-link" style={{ marginRight: '15px', color: '#a855f7', fontWeight: 'bold', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              ✨ AI Planner
+            </Link>
             <span className="welcome-text">
               <div className="avatar">
                 {user.username ? user.username.charAt(0).toUpperCase() : "U"}

@@ -6,6 +6,7 @@ require('dotenv').config();
 const requireAuth = require('./middleware/requireAuth');
 const todoRoutes = require('./routes/todoRoutes');
 const userRoutes = require('./routes/userRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -42,6 +43,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/user', userRoutes);
 app.use('/api/todos', requireAuth, todoRoutes);
+app.use('/api/ai', requireAuth, aiRoutes);
 
 
 mongoose

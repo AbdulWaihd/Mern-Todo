@@ -23,7 +23,7 @@ export default function TodoCard({ todo, onDelete, onToggle, onEditClick }) {
   };
 
   return (
-    <div className={`todo-card ${isCompleted ? "completed" : ""}`}>
+    <div className={`todo-card ${isCompleted ? "completed" : ""}`} style={todo.isAIGenerated ? { backgroundColor: "rgba(168, 85, 247, 0.05)", borderLeftColor: "#a855f7" } : {}}>
       <div className="todo-checkbox-wrapper">
         <input
           type="checkbox"

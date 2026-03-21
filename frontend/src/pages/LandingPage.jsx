@@ -75,16 +75,26 @@ const LandingPage = () => {
                     </div>
                     <p className="hero-caption">Free forever · No credit card required</p>
                     
-                    {/* CSS Mockup Browser */}
-                    <div className="browser-mockup">
-                        <div className="browser-header">
-                            <div className="dots">
-                                <span></span><span></span><span></span>
+                    {/* REAL APP PREVIEWS */}
+                    <div className="preview-grid-lp">
+                        <div className="browser-mockup">
+                            <div className="browser-header">
+                                <div className="dots"><span></span><span></span><span></span></div>
+                                <div className="address-bar">taskflow.app/dashboard</div>
                             </div>
-                            <div className="address-bar">taskflow.app/dashboard</div>
+                            <div className="browser-content">
+                                <img src="/dashboard_real.png" alt="Taskflow Dashboard" className="mockup-img" />
+                            </div>
                         </div>
-                        <div className="browser-content">
-                            <img src="/taskflow_mockup.png" alt="Taskflow Dashboard" className="mockup-img" />
+
+                        <div className="browser-mockup">
+                            <div className="browser-header">
+                                <div className="dots"><span></span><span></span><span></span></div>
+                                <div className="address-bar">taskflow.app/ai-planner</div>
+                            </div>
+                            <div className="browser-content">
+                                <img src="/ai_planner_real.png" alt="AI Planner" className="mockup-img" />
+                            </div>
                         </div>
                     </div>
                 </div>

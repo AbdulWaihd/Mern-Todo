@@ -16,7 +16,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <div className={user ? "pages p-4" : "landing-wrapper"}>
+      <div className={user ? "dashboard-layout" : "landing-wrapper"}>
         <Routes>
           {/* Public Route: Landing Page */}
           <Route path="/" element={!user ? <LandingPage /> : <Navigate to="/dashboard" />} />

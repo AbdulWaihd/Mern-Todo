@@ -107,17 +107,39 @@
 }
 
 /* BROWSER MOCKUP */
+/* REAL APP PREVIEWS */
+.preview-grid-lp {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  margin-bottom: 60px;
+}
+
+@media (min-width: 1024px) {
+  .preview-grid-lp {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+}
+
 .browser-mockup {
-    width: 100%;
-    max-width: 1000px;
+    flex: 1;
+    max-width: 800px;
     background: #1e1e2d;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
     overflow: hidden;
     transition: 0.5s;
-    animation: fadeInUp 1s ease-out;
 }
+
+.browser-mockup:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: rgba(124, 58, 237, 0.4);
+}
+
 
 .browser-header {
     height: 48px;

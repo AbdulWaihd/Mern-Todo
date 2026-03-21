@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import TodoCard from "../components/TodoCard";
-import { FaPlus, FaSave, FaTimes, FaFilePdf, FaMagic, FaChevronDown, FaChevronRight, FaEdit } from "react-icons/fa";
+import { FaPlus, FaSave, FaTimes, FaFilePdf, FaMagic, FaChevronDown, FaChevronRight, FaEdit, FaInbox, FaRegCalendarCheck, FaCheckCircle, FaStar, FaSearch } from "react-icons/fa";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -11,6 +11,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [collapsedGoals, setCollapsedGoals] = useState({});
+  const [showTaskForm, setShowTaskForm] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Sort & Filter state
   const [sortBy, setSortBy] = useState("createdAt");
@@ -32,15 +34,12 @@ export default function Home() {
   useEffect(() => {
     const fetchTodos = async () => {
       if (!user) return;
-
       setLoading(true);
       try {
         const response = await fetch(`${BASE_URL}/api/todos`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-
         if (!response.ok) throw new Error("Unauthorized or failed to fetch todos");
-
         const data = await response.json();
         setTodos(data);
       } catch (err) {
@@ -48,7 +47,6 @@ export default function Home() {
       }
       setLoading(false);
     };
-
     fetchTodos();
   }, [user, BASE_URL]);
 
@@ -65,23 +63,21 @@ export default function Home() {
       priority: todo.priority || "medium",
       dueDate: todo.dueDate ? todo.dueDate.split('T')[0] : ""
     });
+    setShowTaskForm(true);
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setFormData({ title: "", description: "", priority: "medium", dueDate: "" });
+    setShowTaskForm(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) {
-      setError("You must be logged in");
-      return;
-    }
+    if (!user) return;
 
     try {
       if (editingId) {
-        // Edit Todo Setup
         const response = await fetch(`${BASE_URL}/api/todos/${editingId}`, {
           method: "PUT",
           headers: {
@@ -90,15 +86,11 @@ export default function Home() {
           },
           body: JSON.stringify(formData),
         });
-
         if (!response.ok) throw new Error("Failed to edit todo");
-
         const updatedTodo = await response.json();
         setTodos(todos.map(t => t._id === editingId ? updatedTodo : t));
         cancelEdit();
-
       } else {
-        // Add Todo Setup
         const response = await fetch(`${BASE_URL}/api/todos`, {
           method: "POST",
           headers: {
@@ -107,12 +99,10 @@ export default function Home() {
           },
           body: JSON.stringify(formData),
         });
-
         if (!response.ok) throw new Error("Failed to add todo");
-
         const newTodo = await response.json();
         setTodos([...todos, newTodo]);
-        cancelEdit(); // Clears form
+        cancelEdit();
       }
     } catch (err) {
       setError(err.message);
@@ -142,7 +132,6 @@ export default function Home() {
         },
         body: JSON.stringify({ completed: !completed }),
       });
-
       const updatedTodo = await response.json();
       setTodos(
         todos.map((todo) =>
@@ -156,11 +145,11 @@ export default function Home() {
 
   // Filter & Sort Logic
   const filteredTodos = todos.filter(t => {
+    if (searchQuery && !t.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     if (filterMode === "pending") return !t.completed;
     if (filterMode === "completed") return t.completed;
-    return true; // "all"
+    return true; 
   });
-
 
   const sortedTodos = [...filteredTodos].sort((a, b) => {
     if (sortBy === "priority") {
@@ -172,245 +161,191 @@ export default function Home() {
       if (!b.dueDate) return -1;
       return new Date(a.dueDate) - new Date(b.dueDate);
     }
-    if (sortBy === "createdAt") {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    }
-    return 0;
+    return new Date(b.createdAt) - new Date(a.createdAt);
   });
 
-  // Separate todos into goal-grouped and standalone
+  // Goal Grouping
   const goalGrouped = {};
   const standaloneTodos = [];
-
   sortedTodos.forEach((todo) => {
     if (todo.goalTitle) {
-      if (!goalGrouped[todo.goalTitle]) {
-        goalGrouped[todo.goalTitle] = [];
-      }
+      if (!goalGrouped[todo.goalTitle]) goalGrouped[todo.goalTitle] = [];
       goalGrouped[todo.goalTitle].push(todo);
-    } else {
-      standaloneTodos.push(todo);
-    }
+    } else standaloneTodos.push(todo);
   });
-
-  const toggleGoalCollapse = (goalTitle) => {
-    setCollapsedGoals(prev => ({ ...prev, [goalTitle]: !prev[goalTitle] }));
-  };
 
   const generatePDF = () => {
     const doc = new jsPDF();
-
-    doc.setFontSize(20);
-    doc.text("Todo Tasks", 14, 22);
-
+    doc.setFontSize(22);
+    doc.setTextColor(30, 41, 59);
+    doc.text("Taskflow Productivity Report", 14, 22);
     doc.setFontSize(11);
     doc.setTextColor(100);
-    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 30);
+    doc.text(`Generated for ${user.username} on ${new Date().toLocaleString()}`, 14, 30);
 
-    const tableColumn = ["Status", "Task Title", "Priority", "Deadline"];
-    const tableRows = [];
-
-    sortedTodos.forEach(todo => {
-      const statusCheckbox = todo.completed ? "[ x ]" : "[   ]";
-      const priorityStr = todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1);
-      const deadlineStr = todo.dueDate ? new Date(todo.dueDate).toLocaleDateString() : "No deadline";
-
-      tableRows.push([
-        statusCheckbox,
-        todo.title,
-        priorityStr,
-        deadlineStr
-      ]);
-    });
+    const tableColumn = ["Status", "Task", "Priority", "Deadline"];
+    const tableRows = sortedTodos.map(todo => [
+      todo.completed ? "Done" : "Pending",
+      todo.title,
+      todo.priority.toUpperCase(),
+      todo.dueDate ? new Date(todo.dueDate).toLocaleDateString() : "-"
+    ]);
 
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
       startY: 40,
       theme: 'grid',
-      headStyles: { fillColor: [99, 102, 241], textColor: [255, 255, 255] },
-      styles: { fontSize: 10, cellPadding: 4 },
-      columnStyles: {
-        0: { halign: 'center', cellWidth: 20 },
-        2: { cellWidth: 30 },
-        3: { cellWidth: 35 }
-      }
+      headStyles: { fillColor: [124, 58, 237] }
     });
-
-    doc.save("todo-tasks.pdf");
+    doc.save("taskflow-report.pdf");
   };
 
   return (
-    <div className="home-layout">
-      {/* LEFT COLUMN: Main Content */}
-      <div className="main-content">
-        <div className="header-actions">
-          <div className="title-section">
-            <h3>My Tasks</h3>
-            <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginTop: '4px' }}>
-              {todos.filter(t => !t.completed).length} pending, {todos.filter(t => t.completed).length} completed
-            </p>
-          </div>
-
-          <div className="filters">
-            <button
-              className="filter-btn"
-              onClick={generatePDF}
-              title="Download tasks as PDF"
-              style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#6366f1', background: 'rgba(99, 102, 241, 0.1)', marginRight: '10px' }}
-            >
-              <FaFilePdf /> Export PDF
-            </button>
-            <button
-              className={`filter-btn ${filterMode === 'all' ? 'active' : ''}`}
-              onClick={() => setFilterMode('all')}
-            >All</button>
-            <button
-              className={`filter-btn ${filterMode === 'pending' ? 'active' : ''}`}
-              onClick={() => setFilterMode('pending')}
-            >Pending</button>
-            <button
-              className={`filter-btn ${filterMode === 'completed' ? 'active' : ''}`}
-              onClick={() => setFilterMode('completed')}
-            >Completed</button>
-
-            <select
-              className="sort-select"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="createdAt">Newest First</option>
-              <option value="priority">High Priority</option>
-              <option value="deadline">Closest Deadline</option>
-            </select>
-          </div>
+    <div className="dashboard-wrapper">
+      {/* LEFT SIDEBAR */}
+      <aside className="dashboard-sidebar">
+        <div className="sidebar-section">
+          <p className="sidebar-label">Views</p>
+          <button className={`sidebar-btn ${filterMode === 'all' ? 'active' : ''}`} onClick={() => setFilterMode('all')}>
+            <FaInbox /> All Tasks
+          </button>
+          <button className={`sidebar-btn ${filterMode === 'pending' ? 'active' : ''}`} onClick={() => setFilterMode('pending')}>
+            <FaRegCalendarCheck /> Pending
+          </button>
+          <button className={`sidebar-btn ${filterMode === 'completed' ? 'active' : ''}`} onClick={() => setFilterMode('completed')}>
+            <FaCheckCircle /> Completed
+          </button>
         </div>
 
-        {error && <div style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#f87171', padding: '12px', borderRadius: '8px' }}>{error}</div>}
-        {loading && <p style={{ color: '#94a3b8' }}>Loading your tasks...</p>}
+        <div className="sidebar-section">
+          <p className="sidebar-label">Smart Goals</p>
+          {Object.keys(goalGrouped).map(goal => (
+            <button key={goal} className="sidebar-goal-link" onClick={() => document.getElementById(goal)?.scrollIntoView({ behavior: 'smooth' })}>
+              <FaMagic style={{ fontSize: '0.8rem', color: '#a855f7' }} /> {goal}
+            </button>
+          ))}
+          {Object.keys(goalGrouped).length === 0 && <p className="sidebar-hint">No active AI goals.</p>}
+        </div>
+        
+        <div className="sidebar-footer">
+           <button className="export-btn-sidebar" onClick={generatePDF}>
+             <FaFilePdf /> Export Report
+           </button>
+        </div>
+      </aside>
 
-        <div className="todo-list-grid">
-          {!loading && sortedTodos.length === 0 ? (
-            <div className="empty-state">
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '10px' }}>🚀</span>
-              <p>Nothing to do yet! Add a task to get started.</p>
-            </div>
-          ) : (
-            <>
+      {/* MAIN CONTENT AREA */}
+      <main className="dashboard-main">
+        {/* TOP BAR */}
+        <header className="dashboard-top-bar">
+          <div className="search-box">
+            <FaSearch />
+            <input 
+              type="text" 
+              placeholder="Search your tasks..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="top-bar-actions">
+             <select className="sort-mini-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                <option value="createdAt">Date added</option>
+                <option value="priority">Priority</option>
+                <option value="deadline">Deadline</option>
+             </select>
+             <button className="add-task-btn-main" onClick={() => setShowTaskForm(true)}>
+               <FaPlus /> Add Task
+             </button>
+          </div>
+        </header>
+
+        {/* TASK CONTENT */}
+        <div className="task-container">
+           {error && <div className="error-banner">{error}</div>}
+           
+           <div className="task-sections">
+              {/* Standalone Section */}
+              <div className="section-title-group">
+                <h2>{filterMode === 'all' ? 'All Tasks' : filterMode.charAt(0).toUpperCase() + filterMode.slice(1)}</h2>
+                <span>{sortedTodos.length} total</span>
+              </div>
+
+              {sortedTodos.length === 0 && !loading && (
+                <div className="empty-dashboard">
+                  <span style={{ fontSize: '3rem' }}>🧘</span>
+                  <h3>You're all caught up!</h3>
+                  <p>Enjoy your day or start a new ambitious goal.</p>
+                </div>
+              )}
+
               {/* Goal-Grouped Todos */}
-              {Object.keys(goalGrouped).map((goalTitle) => {
-                const isCollapsed = collapsedGoals[goalTitle];
-                const goalTodos = goalGrouped[goalTitle];
-                const completedCount = goalTodos.filter(t => t.completed).length;
-
-                return (
-                  <div key={goalTitle} className="goal-group">
-                    <div
-                      className="goal-group-header"
-                      onClick={() => toggleGoalCollapse(goalTitle)}
-                    >
-                      <div className="goal-group-title">
-                        {isCollapsed ? <FaChevronRight /> : <FaChevronDown />}
-                        <FaMagic style={{ color: '#a855f7', fontSize: '0.85rem' }} />
-                        <span>{goalTitle}</span>
-                      </div>
-                      <div className="goal-group-badge">
-                        {completedCount}/{goalTodos.length} done
-                      </div>
+              {Object.keys(goalGrouped).map((goalTitle) => (
+                <div key={goalTitle} id={goalTitle} className="goal-group-v2">
+                  <div className="goal-group-header-v2" onClick={() => setCollapsedGoals(prev => ({ ...prev, [goalTitle]: !prev[goalTitle] }))}>
+                    <FaMagic /> <h3>{goalTitle}</h3>
+                    <div className="goal-progress-pill">
+                      {goalGrouped[goalTitle].filter(t => t.completed).length} / {goalGrouped[goalTitle].length}
                     </div>
-
-                    {!isCollapsed && (
-                      <div className="goal-group-tasks">
-                        {goalTodos.map((todo) => (
-                          <TodoCard
-                            key={todo._id}
-                            todo={todo}
-                            onDelete={handleDelete}
-                            onToggle={handleToggleComplete}
-                            onEditClick={handleEditClick}
-                          />
-                        ))}
-                      </div>
-                    )}
                   </div>
-                );
-              })}
+                  {!collapsedGoals[goalTitle] && (
+                    <div className="goal-group-tasks-v2">
+                      {goalGrouped[goalTitle].map((todo) => (
+                        <TodoCard key={todo._id} todo={todo} onDelete={handleDelete} onToggle={handleToggleComplete} onEditClick={handleEditClick} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
 
               {/* Standalone Todos */}
-              {standaloneTodos.map((todo) => (
-                <TodoCard
-                  key={todo._id}
-                  todo={todo}
-                  onDelete={handleDelete}
-                  onToggle={handleToggleComplete}
-                  onEditClick={handleEditClick}
-                />
-              ))}
-            </>
-          )}
+              <div className="standalone-grid">
+                {standaloneTodos.map((todo) => (
+                  <TodoCard key={todo._id} todo={todo} onDelete={handleDelete} onToggle={handleToggleComplete} onEditClick={handleEditClick} />
+                ))}
+              </div>
+           </div>
         </div>
-      </div>
+      </main>
 
-      {/* RIGHT COLUMN: Sidebar Form */}
-      <div className="sidebar">
-        <h3>
-          {editingId ? <><FaEdit style={{ color: '#6366f1' }} /> Edit Task</> : <><FaPlus style={{ color: '#a855f7' }} /> Add New Task</>}
-        </h3>
-        <form className="todo-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Task Title *</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              placeholder="E.g., Complete project presentation"
-              required
-            />
+      {/* TASK FORM DRAWER / MODAL */}
+      {showTaskForm && (
+        <div className="task-form-overlay" onClick={cancelEdit}>
+          <div className="task-form-drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="drawer-header">
+              <h3>{editingId ? "Edit Task" : "Create New Task"}</h3>
+              <button className="close-drawer" onClick={cancelEdit}><FaTimes /></button>
+            </div>
+            <form onSubmit={handleSubmit} className="drawer-form">
+              <div className="form-group-v2">
+                <label>Title</label>
+                <input name="title" value={formData.title} onChange={handleInputChange} required autoFocus />
+              </div>
+              <div className="form-group-v2">
+                <label>Description</label>
+                <textarea name="description" value={formData.description} onChange={handleInputChange} rows="4" />
+              </div>
+              <div className="form-row-v2">
+                <div className="form-group-v2">
+                  <label>Priority</label>
+                  <select name="priority" value={formData.priority} onChange={handleInputChange}>
+                    <option value="high">🔴 High</option>
+                    <option value="medium">🟡 Medium</option>
+                    <option value="low">🟢 Low</option>
+                  </select>
+                </div>
+                <div className="form-group-v2">
+                  <label>Deadline</label>
+                  <input type="date" name="dueDate" value={formData.dueDate} onChange={handleInputChange} required />
+                </div>
+              </div>
+              <button type="submit" className="save-task-btn">
+                {editingId ? "Update Task" : "Add Task to Inbox"}
+              </button>
+            </form>
           </div>
-
-          <div className="form-group">
-            <label>Description</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              placeholder="Details about the task..."
-              rows="3"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Priority</label>
-            <select name="priority" value={formData.priority} onChange={handleInputChange}>
-              <option value="high">🔴 High Priority</option>
-              <option value="medium">🟡 Medium Priority</option>
-              <option value="low">🟢 Low Priority</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>Deadline *</label>
-            <input
-              type="date"
-              name="dueDate"
-              value={formData.dueDate}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-
-          <button type="submit" className="primary-btn">
-            {editingId ? <><FaSave style={{ marginRight: '6px' }} /> Save Changes</> : "Add Task"}
-          </button>
-
-          {editingId && (
-            <button type="button" className="secondary-btn" onClick={cancelEdit}>
-              <FaTimes style={{ marginRight: '6px' }} /> Cancel Edit
-            </button>
-          )}
-        </form>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -19,7 +19,7 @@ function App() {
       <div className="pages p-4">
         <Routes>
           <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
-          <Route path="/ai-planner" element={user ? <AiPlanner BASE_URL={import.meta.env.VITE_API_URL || "http://localhost:4000"} /> : <Navigate to="/login" />} />
+          <Route path="/ai-planner" element={user ? <AiPlanner BASE_URL={import.meta.env.VITE_API_URL || ""} /> : <Navigate to="/login" />} />
 
           <Route
             path="/login"

@@ -53,8 +53,12 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log(' MongoDB connected');
-    app.listen(port, () => {
-      console.log(` Server running on port ${port}`);
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      app.listen(port, () => {
+        console.log(` Server running on port ${port}`);
+      });
+    }
   })
   .catch((err) => console.error(' MongoDB failed:', err.message));
+
+module.exports = app;

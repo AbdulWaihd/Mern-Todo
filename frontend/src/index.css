@@ -90,6 +90,17 @@ input, select, textarea {
   transition: all 0.2s ease;
 }
 
+select {
+  cursor: pointer;
+}
+
+select option {
+  background: #1e293b; /* Solid dark background for browser popover */
+  color: #f8fafc;
+  padding: 12px;
+}
+
+
 input:focus, select:focus, textarea:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
@@ -261,11 +272,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .sort-mini-select {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 8px 12px;
   font-size: 0.85rem;
+  border-radius: 8px;
+  color: #f1f5f9;
 }
+
 
 .add-task-btn-main {
   background: #7c3aed;

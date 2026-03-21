@@ -160,12 +160,12 @@ const LandingPage = () => {
                             <Link to="/signup">AI Planner</Link>
                             <a href="#">About</a>
                         </div>
-                    </div>
-                    <div className="footer-social">
-                        <h4>Social</h4>
-                        <div className="social-icons">
-                            <a href="https://github.com" target="_blank" rel="noreferrer"><FaGithub /></a>
-                            <a href="https://linkedin.com" target="_blank" rel="noreferrer"><FaLinkedin /></a>
+                        <div className="link-group">
+                            <h4>Social</h4>
+                            <div className="social-icons">
+                                <a href="https://github.com/AbdulWaihd" target="_blank" rel="noreferrer"><FaGithub /> GitHub</a>
+                                <a href="https://linkedin.com/in/abdulwahid02" target="_blank" rel="noreferrer"><FaLinkedin /> LinkedIn</a>
+                            </div>
                         </div>
                     </div>
                 </div>

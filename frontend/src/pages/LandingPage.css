@@ -372,17 +372,26 @@
 
 .social-icons {
     display: flex;
-    gap: 20px;
-    font-size: 1.5rem;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .social-icons a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
     color: #94a3b8;
+    text-decoration: none;
     transition: 0.2s;
 }
 
 .social-icons a:hover {
     color: #7c3aed;
+}
+
+.social-icons svg {
+    font-size: 1.1rem;
 }
 
 .footer-bottom {

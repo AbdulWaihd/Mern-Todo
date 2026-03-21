@@ -44,7 +44,7 @@ export default function LogIn() {
       dispatch({ type: "LOGIN", payload: data });
       setSuccess("Login successful!");
       setIsLoading(false);
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       console.error("Login error:", err);
       setError("Network error. Please try again.");

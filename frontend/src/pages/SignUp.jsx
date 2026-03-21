@@ -45,7 +45,7 @@ export default function SignUp() {
       dispatch({ type: "LOGIN", payload: data });
       setSuccess("Signup successful!");
       setIsLoading(false);
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       console.error("Signup error:", err);
       setError("Network error. Please try again.");

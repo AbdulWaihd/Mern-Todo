@@ -1,164 +1,100 @@
-cat > README.md << 'EOF'
-# MERN Todo App
+# ✨ Taskflow: AI-Driven Productivity Platform
 
-A full-stack **Task / Todo Management Application** built using the **MERN Stack** (MongoDB, Express, React, Node.js), featuring authentication (Login / Signup), JWT-based authorization, and CRUD functionality for todos.
-
----
-
-##  Features
-
-###  **Authentication**
-- User Signup & Login  
-- JWT Token Authentication  
-- Protected Routes (only logged-in users can access Home)
-
-### **Todo Management**
-- Create new tasks (with title, description & priority)  
-- View all tasks  
-- Mark tasks as completed  
-- Delete tasks  
-- Sorted by **priority (High > Medium > Low)**
-
-###  **UI & Styling**
-- Responsive design using **custom CSS** (currently; Tailwind planned)  
-- User-specific dashboard: `{username}'s Todo List`  
-- Clean layout with Left (Todo List) & Right (Add Todo Form)
+Taskflow is a professional MERN stack productivity workspace that leverages **Google Gemini AI** to transform vague goals into prioritized, actionable task plans. Built for developers and project managers who need to automate the cognitive load of planning.
 
 ---
 
-### Tech Stack
-\`\`\`
+## 🚀 Key Features
 
-React + Vite → Used for building the frontend UI
+### 🧠 **Smart AI Planner**
+- **Actionable Plans**: Input goals like "Prepare for exam" and get 4-7 structured subtasks.
+- **Dynamic Estimates**: Includes AI-calculated deadlines and priority rankings.
+- **Goal Grouping**: Automatic hierarchical grouping of tasks for better organization.
 
-Node.js & Express → Backend server and REST API
+### 🔐 **Enterprise-Grade Security**
+- **JWT Authentication**: Secure stateless sessions stored in `localStorage`.
+- **OTP Verification**: Email-based OTP system for account recovery (via Nodemailer).
+- **Protected Routes**: React Router 7 guards ensuring only authorized users access the dashboard.
 
-MongoDB + Mongoose → Database and data modeling
+### 📋 **Task Management**
+- **Full CRUD**: Create, read, update (complete), and delete tasks.
+- **Priority Sorting**: Tasks are intelligently ordered (High > Medium > Low).
+- **PDF Reporting**: Export entire task lists to professional PDFs using `jsPDF`.
 
-JWT (JSON Web Token) & bcryptjs → Authentication and password hashing/security
+---
 
-React Router → Frontend page routing and navigation
+## 🛠 Tech Stack
 
-LocalStorage → Stores user data and JWT token in browser
+- **Frontend**: React 19, Vite, Tailwind CSS 4, React Router 7.
+- **Backend**: Node.js, Express.js.
+- **Database**: MongoDB Atlas with Mongoose ODM.
+- **AI**: Google Generative AI (Gemini Flash).
+- **Communication**: Nodemailer for OTP delivery.
 
-Custom CSS → UI styling (will later migrate to Tailwind CSS)
+---
 
-\`\`\`
+## 📂 Project Structure
 
-##  Folder Structure
-
-\`\`\`
+```text
 todoApp/
 ├── backend/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── server.js
-│   └── config/
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   └── Navbar.jsx
-│   │   ├── pages/
-│   │   │   ├── Home.jsx
-│   │   │   ├── Login.jsx
-│   │   │   └── Signup.jsx
-│   │   ├── hooks/
-│   │   │   ├── useAuthContext.js
-│   │   │   └── useLogin.js
-│   │   ├── context/AuthContext.jsx
-│   │   └── App.jsx
-│   └── index.css
-├── README.md
-└── .gitignore
-\`\`\`
+│   ├── controllers/      # AI and Todo logic
+│   ├── models/           # Mongoose schemas
+│   ├── routes/           # API endpoints
+│   ├── middleware/       # Auth guards
+│   └── server.js         # Entry point
+└── frontend/
+    ├── src/
+    │   ├── components/   # Navbar, TodoCards
+    │   ├── pages/        # Landing, Dashboard, AI Planner
+    │   ├── hooks/        # Custom Auth logic
+    │   └── App.jsx       # Global Routing
+```
 
 ---
 
-##  Setup & Installation
+## 📦 Setup & Installation
 
-###  Clone Repository
-\`\`\`bash
-git clone https://github.com/your-username/mern-todo-app.git
-cd mern-todo-app
-\`\`\`
-
----
-
-### Backend Setup
-\`\`\`bash
+### 1. Backend Setup
+```bash
 cd backend
 npm install
-\`\`\`
+```
+Create `.env`:
+```
+PORT=3000
+MONGO_URI=your_mongodb_uri
+SECRET=your_jwt_secret
+EMAIL_USER=your_gmail@gmail.com
+EMAIL_PASS=your_app_password
+GEMINI_API_KEY=your_key
+```
 
-Create `.env` file inside backend:
-\`\`\`
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
-\`\`\`
-
-Run server:
-\`\`\`bash
-npm run dev
-\`\`\`
-
----
-
-###  Frontend Setup
-\`\`\`bash
+### 2. Frontend Setup
+```bash
 cd ../frontend
 npm install
 npm run dev
-\`\`\`
+```
+Create `.env`:
+```
+VITE_API_URL=http://localhost:3000
+```
 
 ---
 
-## Authentication Flow (Simplified)
+## 📃 API Routes
 
-1. User logs in → Backend generates **JWT Token**  
-2. Token is stored in **localStorage**  
-3. For every request to \`/api/todos\`, token is sent in headers:
-   \`\`\`
-   Authorization: Bearer <token>
-   \`\`\`
-4. Backend verifies token → allows access to data
+### Auth
+- `POST /api/user/signup`: Create account
+- `POST /api/user/login`: Authenticate
 
----
-
-##  API Routes
-
-### **Auth Routes**
-| Method | Endpoint     | Description      |
-|--------|--------------|------------------|
-| POST   | /api/user/signup | Create new user |
-| POST   | /api/user/login  | Authenticate user |
-
-### **Todo Routes (Protected)**
-| Method | Endpoint       | Description        |
-|--------|----------------|--------------------|
-| GET    | /api/todos     | Get all todos      |
-| POST   | /api/todos     | Create a new todo  |
-| PUT    | /api/todos/:id | Update (complete)  |
-| DELETE | /api/todos/:id | Delete a todo      |
+### Protected (Requires JWT)
+- `GET /api/todos`: Fetch all tasks
+- `POST /api/todos`: Create task
+- `POST /api/ai/breakdown`: Generate AI planning subtasks
+- `DELETE /api/todos/:id`: Remove task
 
 ---
 
-##  Upcoming Features
--  Tailwind CSS + React Icons  
--  Dark Mode  
--  Edit Task Functionality  
--  Deploy Backend (Render/     Railway)  
--  Deploy Frontend (Netlify/Vercel)
-
----
-
-## Contributing
-
-Contributions, issues and feature requests are welcome!  
-Feel free to fork and submit a pull request.
-
----
-
-
-EOF
+**Developed with ❤️ by Sheikh Abdul Wahid**

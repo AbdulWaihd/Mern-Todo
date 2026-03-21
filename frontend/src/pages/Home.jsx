@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import TodoCard from "../components/TodoCard";
-import { FaPlus, FaSave, FaTimes, FaFilePdf, FaRobot, FaMagic, FaChevronDown, FaChevronRight, FaEdit } from "react-icons/fa";
+import { FaPlus, FaSave, FaTimes, FaFilePdf, FaMagic, FaChevronDown, FaChevronRight, FaEdit } from "react-icons/fa";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -10,7 +10,6 @@ export default function Home() {
   const { user } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isAiSorting, setIsAiSorting] = useState(false);
   const [collapsedGoals, setCollapsedGoals] = useState({});
 
   // Sort & Filter state
@@ -162,34 +161,8 @@ export default function Home() {
     return true; // "all"
   });
 
-  const handleAiSort = async () => {
-    if (!user) return;
-    setIsAiSorting(true);
-    try {
-      const response = await fetch(`${BASE_URL}/api/todos/ai-sort`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        // Send only pending tasks for AI to rank, or all? Let's send pending tasks so they get priority output.
-        body: JSON.stringify({ todos: todos.filter(t => !t.completed) }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Failed to sort tasks via AI");
-
-      const completedTasks = todos.filter(t => t.completed);
-      setTodos([...data, ...completedTasks]);
-      setSortBy('ai');
-    } catch (err) {
-      setError(err.message);
-    }
-    setIsAiSorting(false);
-  };
 
   const sortedTodos = [...filteredTodos].sort((a, b) => {
-    if (sortBy === "ai") return 0; // Maintain custom AI order mapping
     if (sortBy === "priority") {
       const priorityOrder = { high: 3, medium: 2, low: 1 };
       return priorityOrder[b.priority] - priorityOrder[a.priority];
@@ -309,17 +282,7 @@ export default function Home() {
               <option value="createdAt">Newest First</option>
               <option value="priority">High Priority</option>
               <option value="deadline">Closest Deadline</option>
-              <option value="ai">✨ AI Ordered</option>
             </select>
-            <button
-              className="filter-btn"
-              onClick={handleAiSort}
-              disabled={isAiSorting}
-              title="Order Tasks Using AI"
-              style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#a855f7', background: 'rgba(168, 85, 247, 0.1)' }}
-            >
-              <FaRobot /> {isAiSorting ? "Loading..." : "AI Sort"}
-            </button>
           </div>
         </div>
 

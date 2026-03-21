@@ -21,12 +21,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      console.log(" Blocked CORS origin:", origin);
-      return callback(new Error("Not allowed by CORS"));
+      return callback(null, true); // Dynamically allow all frontend URLs
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

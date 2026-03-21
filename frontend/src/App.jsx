@@ -8,7 +8,6 @@ import LogIn from "./pages/LogIn";
 import ForgotPassword from "./pages/ForgotPassword";
 import AiPlanner from "./pages/AiPlanner";
 import { useAuthContext } from "./hooks/useAuthContext";
-import ThemeToggle from "./components/ThemeToggle";
 import "./index.css";
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      <ThemeToggle />
       <Navbar />
       <div className={user ? "dashboard-layout" : "landing-wrapper"}>
         <Routes>

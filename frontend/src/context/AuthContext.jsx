@@ -1,39 +1,39 @@
-/* eslint-disable react-refresh/only-export-components */
-
-import {createContext, useEffect, useReducer} from 'react';
+import { createContext, useEffect, useReducer, useState } from 'react';
 
 export const AuthContext = createContext();
 
-const initalState = {
-    user: null,
-    
-};
-// Create Reducer Function
 const authReducer = (state, action) => {
     switch(action.type) {
         case 'LOGIN':
-            return { ...state, user: action.payload };
+            return { user: action.payload };
         case 'LOGOUT':
-            return { ...state, user: null };
+            return { user: null };
         default:
             return state;
     }
 };
-// Create Provider Component
-export const AuthContextProvider = ({children}) => {
-    const [state, dispatch] = useReducer(authReducer, initalState);
-// Load user from localStorage (so session persists after refresh)
+
+export const AuthContextProvider = ({ children }) => {
+    const [state, dispatch] = useReducer(authReducer, { user: null });
+    const [authReady, setAuthReady] = useState(false);
+
     useEffect(() => {
-        const storedUser=JSON.parse(localStorage.getItem('user'));
-        if(storedUser) {
-            dispatch({type: 'LOGIN', payload: storedUser});
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            dispatch({ type: 'LOGIN', payload: user });
         }
+        setAuthReady(true);
     }, []);
+
     console.log('AuthContext state:', state);
+
+    if (!authReady) {
+        return <div className="loading-screen">Loading Taskflow...</div>;
+    }
+
     return (
-        <AuthContext.Provider value={{...state, dispatch}}>
+        <AuthContext.Provider value={{ ...state, dispatch }}>
             {children}
         </AuthContext.Provider>
     );
-}
-
+};

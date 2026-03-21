@@ -8,7 +8,7 @@
 }
 
 :root {
-  /* Dark Mode (Default) */
+  /* High-end Dark Theme (Permanent) */
   --bg-primary: #0f172a;
   --bg-secondary: #0d0e14;
   --bg-card: #1e293b;
@@ -22,29 +22,18 @@
   --input-bg: #1e293b;
 }
 
-[data-theme='light'] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #f1f5f9;
-  --bg-card: #ffffff;
-  --bg-card-glass: rgba(255, 255, 255, 0.8);
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --accent: #7c3aed;
-  --accent-light: #6d28d9;
-  --border: rgba(0, 0, 0, 0.1);
-  --sidebar-bg: #ffffff;
-  --input-bg: #ffffff;
-}
-
 body {
   font-family: "Outfit", sans-serif;
   background: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.1), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.1), transparent 25%);
   color: var(--text-main);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  transition: background 0.3s ease, color 0.3s ease;
 }
+
 
 /* Updated Scrollbar */
 ::-webkit-scrollbar {

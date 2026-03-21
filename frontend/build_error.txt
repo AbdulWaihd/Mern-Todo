@@ -1,0 +1,40 @@
+
+> frontend@0.0.0 build
+> vite build
+
+[36mvite v7.1.12 [32mbuilding for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 27 modules transformed.
+Γ£ù Build failed in 994ms
+error during build:
+[vite:esbuild] Transform failed with 2 errors:
+C:/Users/Sheikh Abdul Wahid/OneDrive/Desktop/50daysMern/todoApp/frontend/src/pages/Home.jsx:458:7: ERROR: Multiple exports with the same name "default"
+C:/Users/Sheikh Abdul Wahid/OneDrive/Desktop/50daysMern/todoApp/frontend/src/pages/Home.jsx:458:24: ERROR: The symbol "Home" has already been declared
+file: C:/Users/Sheikh Abdul Wahid/OneDrive/Desktop/50daysMern/todoApp/frontend/src/pages/Home.jsx:458:7
+
+Multiple exports with the same name "default"
+456 |  
+457 |  
+458 |  export default function Home() {
+    |         ^
+459 |    const [todos, setTodos] = useState([]);
+460 |    const { user } = useAuthContext();
+
+The symbol "Home" has already been declared
+456 |  
+457 |  
+458 |  export default function Home() {
+    |                          ^
+459 |    const [todos, setTodos] = useState([]);
+460 |    const { user } = useAuthContext();
+
+    at failureErrorWithLog (C:\Users\Sheikh Abdul Wahid\OneDrive\Desktop\50daysMern\todoApp\frontend\node_modules\esbuild\lib\main.js:1467:15)
+    at C:\Users\Sheikh Abdul Wahid\OneDrive\Desktop\50daysMern\todoApp\frontend\node_modules\esbuild\lib\main.js:736:50
+    at responseCallbacks.<computed> (C:\Users\Sheikh Abdul Wahid\OneDrive\Desktop\50daysMern\todoApp\frontend\node_modules\esbuild\lib\main.js:603:9)
+    at handleIncomingPacket (C:\Users\Sheikh Abdul Wahid\OneDrive\Desktop\50daysMern\todoApp\frontend\node_modules\esbuild\lib\main.js:658:12)
+    at Socket.readFromStdout (C:\Users\Sheikh Abdul Wahid\OneDrive\Desktop\50daysMern\todoApp\frontend\node_modules\esbuild\lib\main.js:581:7)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)

@@ -147,7 +147,11 @@
 
 @media (min-width: 1024px) {
   .browser-mockup {
-    min-width: 420px; /* Minimum width on desktop as requested */
+    min-width: 380px; /* Reduced min-width slightly for the others to make room */
+  }
+  .planner-mockup {
+    flex: 1.4; /* Enlarge AI Planner relative to the others */
+    min-width: 520px;
   }
 }
 

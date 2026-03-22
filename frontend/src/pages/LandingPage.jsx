@@ -90,7 +90,7 @@ const LandingPage = () => {
                             </div>
                         </div>
 
-                        <div className="browser-mockup">
+                        <div className="browser-mockup planner-mockup">
                             <div className="browser-header">
                                 <div className="dots"><span></span><span></span><span></span></div>
                                 <div className="address-bar">taskflow.app/ai-planner</div>

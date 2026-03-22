@@ -7,6 +7,7 @@ import Signup from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
 import ForgotPassword from "./pages/ForgotPassword";
 import AiPlanner from "./pages/AiPlanner";
+import Contact from "./pages/Contact";
 import { useAuthContext } from "./hooks/useAuthContext";
 import "./index.css";
 
@@ -24,6 +25,7 @@ function App() {
           {/* Protected Routes */}
           <Route path="/dashboard" element={user ? <Home /> : <Navigate to="/login" />} />
           <Route path="/ai-planner" element={user ? <AiPlanner BASE_URL={import.meta.env.VITE_API_URL || ""} /> : <Navigate to="/login" />} />
+          <Route path="/contact" element={user ? <Contact /> : <Navigate to="/login" />} />
 
           {/* Auth Routes */}
           <Route

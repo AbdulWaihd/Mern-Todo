@@ -1,0 +1,229 @@
+.contact-page-wrapper {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #060e20;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  padding: 2rem;
+}
+
+.contact-bg-glow {
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(186, 158, 255, 0.15) 0%, rgba(52, 181, 250, 0.05) 70%, transparent 100%);
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.contact-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 600px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.contact-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ba9eff 0%, #34b5fa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.contact-header p {
+  color: #a3aac4;
+  font-size: 1.1rem;
+}
+
+.contact-form-glass {
+  background: rgba(25, 37, 64, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(186, 158, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.contact-input-group {
+  margin-bottom: 1.5rem;
+}
+
+.contact-input-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #dee5ff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.contact-input-group label svg {
+  color: #ba9eff;
+}
+
+.contact-input-disabled {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(64, 72, 93, 0.3);
+  border-radius: 0.75rem;
+  padding: 0.8rem 1rem;
+  color: #6d758c;
+  font-size: 1rem;
+  cursor: not-allowed;
+}
+
+.contact-form-glass textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(64, 72, 93, 0.5);
+  border-radius: 0.75rem;
+  padding: 0.8rem 1rem;
+  color: #dee5ff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  resize: none;
+}
+
+.contact-form-glass textarea:focus {
+  outline: none;
+  border-color: #ba9eff;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 4px rgba(186, 158, 255, 0.1);
+}
+
+.contact-submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #ba9eff 0%, #34b5fa 100%);
+  color: #000;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 1rem;
+}
+
+.contact-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(186, 158, 255, 0.4);
+  filter: brightness(1.1);
+}
+
+.contact-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.contact-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contact-error {
+  background: rgba(255, 110, 132, 0.1);
+  border-left: 4px solid #ff6e84;
+  color: #ffb2b9;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.contact-success {
+  background: rgba(52, 250, 157, 0.1);
+  border-left: 4px solid #34fa9d;
+  color: #b2ffda;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1024px) {
+  .contact-container {
+    max-width: 90%;
+  }
+
+  .contact-header h1 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-page-wrapper {
+    padding: 1.5rem;
+  }
+
+  .contact-form-glass {
+    padding: 2rem;
+  }
+  
+  .contact-header h1 {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-page-wrapper {
+    padding: 1rem;
+    align-items: flex-start; /* Better for long forms on small screens */
+    padding-top: 3rem;
+  }
+
+  .contact-form-glass {
+    padding: 1.5rem;
+    border-radius: 1rem;
+  }
+
+  .contact-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .contact-header p {
+    font-size: 1rem;
+  }
+
+  .contact-submit-btn {
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+}
+
+/* Specific adjustments for iPhone 12/mini narrow screens */
+@media (max-width: 390px) {
+  .contact-header h1 {
+    font-size: 1.6rem;
+  }
+  
+  .contact-form-glass {
+    padding: 1.25rem;
+  }
+}

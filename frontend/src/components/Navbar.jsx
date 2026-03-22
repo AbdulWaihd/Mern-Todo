@@ -1,7 +1,8 @@
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import { FaCheckDouble } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { FaCheckDouble, FaBars, FaChevronDown, FaSignOutAlt } from "react-icons/fa";
+import { useEffect, useState, useRef } from "react";
+import { useSidebar } from "../context/SidebarContext";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -9,13 +10,25 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+  const { toggleSidebar } = useSidebar();
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -26,7 +39,7 @@ export default function Navbar() {
 
   // Check if we should show the "Landing Page" style navbar
   const isPublicPage = ["/", "/login", "/signup", "/forgot-password"].includes(location.pathname);
-  
+
   // Use public style if it's a public page AND user is NOT logged in
   const usePublicStyle = isPublicPage && !user;
 
@@ -53,40 +66,64 @@ export default function Navbar() {
   // Private Navbar (Dashboard/AI Planner)
   return (
     <nav className="navbar private-nav">
-      <Link to="/dashboard" className="navbar-brand">
-        <FaCheckDouble className="navbar-icon" />
-        <h2 className="navbar-title">Taskflow</h2>
-      </Link>
+      <div className="navbar-left">
+        {user && (
+          <button className="hamburger-btn" onClick={toggleSidebar}>
+            <FaBars />
+          </button>
+        )}
+        <Link to={user ? "/dashboard" : "/"} className="navbar-brand">
+          <FaCheckDouble className="navbar-icon" />
+          <h2 className="navbar-title">Taskflow</h2>
+        </Link>
+      </div>
 
       <div className="nav-buttons">
         {user && (
           <>
-            <Link to="/ai-planner" className="navbar-link" style={{ marginRight: '15px', color: '#a855f7', fontWeight: 'bold', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
-              ✨ AI Planner
-            </Link>
-            <Link to="/dashboard" className="navbar-link" style={{ marginRight: '15px', color: '#6366f1', fontWeight: 'bold', textDecoration: 'none' }}>
-              Dashboard
-            </Link>
-            <span className="welcome-text">
-              <div className="avatar">
-                {user.username ? user.username.charAt(0).toUpperCase() : "U"}
+            <div className="nav-links">
+              {location.pathname.includes("ai-planner") ? (
+                <Link to="/dashboard" className="navbar-link">
+                  Dashboard
+                </Link>
+              ) : (
+                <Link to="/ai-planner" className="navbar-link ai-planner-link">
+                  ✨ AI Planner
+                </Link>
+              )}
+            </div>
+
+            <div className="user-menu-container" ref={dropdownRef}>
+              <div
+                className="user-profile-trigger"
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
+                <div className="avatar">
+                  {user.username ? user.username.charAt(0).toUpperCase() : "U"}
+                </div>
+                <span className="username-text">{user.username}</span>
+                <FaChevronDown className={`dropdown-arrow ${showDropdown ? 'open' : ''}`} />
               </div>
-              {user.username}
-            </span>
-            <button className="logout-btn" onClick={handleLogout}>
-              Logout
-            </button>
+
+              {showDropdown && (
+                <div className="user-dropdown">
+                  <button className="dropdown-item logout-item" onClick={handleLogout}>
+                    <FaSignOutAlt /> Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </>
         )}
         {!user && (
-           <>
-           <button className="login-btn" onClick={() => navigate("/login")}>
-             Log In
-           </button>
-           <button className="signup-btn" onClick={() => navigate("/signup")}>
-             Sign Up Free
-           </button>
-         </>
+          <>
+            <button className="login-btn" onClick={() => navigate("/login")}>
+              Log In
+            </button>
+            <button className="signup-btn" onClick={() => navigate("/signup")}>
+              Sign Up Free
+            </button>
+          </>
         )}
       </div>
     </nav>

@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import TodoCard from "../components/TodoCard";
 import { FaPlus, FaSave, FaTimes, FaFilePdf, FaMagic, FaChevronDown, FaChevronRight, FaEdit, FaInbox, FaRegCalendarCheck, FaCheckCircle, FaStar, FaSearch } from "react-icons/fa";
+import { useSidebar } from "../context/SidebarContext";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 export default function Home() {
   const [todos, setTodos] = useState([]);
   const { user } = useAuthContext();
+  const { isSidebarOpen, closeSidebar } = useSidebar();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [collapsedGoals, setCollapsedGoals] = useState({});
@@ -203,8 +205,14 @@ export default function Home() {
 
   return (
     <div className="dashboard-wrapper">
+      {/* SIDEBAR BACKDROP (Mobile) */}
+      <div 
+        className={`sidebar-backdrop ${isSidebarOpen ? 'mobile-open' : ''}`} 
+        onClick={closeSidebar}
+      ></div>
+
       {/* LEFT SIDEBAR */}
-      <aside className="dashboard-sidebar">
+      <aside className={`dashboard-sidebar ${isSidebarOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-section">
           <p className="sidebar-label">Views</p>
           <button className={`sidebar-btn ${filterMode === 'all' ? 'active' : ''}`} onClick={() => setFilterMode('all')}>

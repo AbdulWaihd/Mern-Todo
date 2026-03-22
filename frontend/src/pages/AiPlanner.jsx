@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { FaMagic, FaSave, FaTimes, FaSpinner, FaChevronDown, FaChevronRight } from "react-icons/fa";
+import { useSidebar } from "../context/SidebarContext";
 import SubtaskPreviewCard from "../components/SubtaskPreviewCard";
 import TodoCard from "../components/TodoCard";
 
 export default function AiPlanner({ BASE_URL }) {
   const { user } = useAuthContext();
+  const { isSidebarOpen, closeSidebar } = useSidebar();
   const [goal, setGoal] = useState("");
   const [deadline, setDeadline] = useState("");
   const [context, setContext] = useState("");
@@ -145,14 +147,19 @@ export default function AiPlanner({ BASE_URL }) {
   });
 
   return (
-    <div className="home-layout">
+    <div className="dashboard-wrapper">
+      {/* SIDEBAR BACKDROP (Mobile) */}
+      <div 
+        className={`sidebar-backdrop ${isSidebarOpen ? 'mobile-open' : ''}`} 
+        onClick={closeSidebar}
+      ></div>
       {/* LEFT COLUMN: Main Interaction */}
-      <div className="main-content" style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
+      <div className="main-content">
         
         {/* TOP SECTION: Input Form */}
-        <div style={{ background: "rgba(15, 23, 42, 0.6)", padding: "30px", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.05)" }}>
-          <h2 style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
-            <FaMagic style={{ color: "#a855f7" }} /> AI Smart Add
+        <div className="ai-planner-form-card">
+          <h2 className="ai-planner-title">
+            <FaMagic className="ai-magic-icon" /> AI Smart Add
           </h2>
           <p style={{ color: "#94a3b8", marginBottom: "20px" }}>
             Tell our AI what you want to achieve, and it will break it down into actionable subtasks with estimated time and deadlines.
@@ -171,8 +178,8 @@ export default function AiPlanner({ BASE_URL }) {
               />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }}>
-              <div className="form-group" style={{ marginBottom: "0" }}>
+            <div className="ai-planner-form-row">
+              <div className="form-group">
                 <label>Target deadline</label>
                 <input
                   type="date"
@@ -182,7 +189,7 @@ export default function AiPlanner({ BASE_URL }) {
                 />
               </div>
 
-              <div className="form-group" style={{ marginBottom: "0" }}>
+              <div className="form-group">
                 <label>Any extra context? (Optional)</label>
                 <input
                   type="text"
@@ -255,8 +262,8 @@ export default function AiPlanner({ BASE_URL }) {
         )}
       </div>
 
-      {/* RIGHT COLUMN: History */}
-      <div className="sidebar">
+      {/* RIGHT COLUMN: History (Acting as Sidebar) */}
+      <div className={`dashboard-sidebar ${isSidebarOpen ? 'mobile-open' : ''}`}>
         <h3 style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "15px", marginBottom: "20px" }}>
           Saved AI Goals
         </h3>

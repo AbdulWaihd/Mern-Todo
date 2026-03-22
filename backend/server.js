@@ -42,22 +42,31 @@ app.get('/', (req, res) => {
 });
 
 
+// Better connection for both local and deployment
+const connectDB = async () => {
+  try {
+    if (mongoose.connection.readyState >= 1) return;
+    
+    await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 10000, // Wait 10s before failing
+    });
+    console.log('✅ MongoDB connected successfully');
+  } catch (err) {
+    console.error('❌ MongoDB Connection ERROR:', err.message);
+  }
+};
+
+// Start connection
+connectDB();
+
 app.use('/api/user', userRoutes);
 app.use('/api/todos', requireAuth, todoRoutes);
 app.use('/api/ai', requireAuth, aiRoutes);
 app.use('/api/contact', requireAuth, contactRoutes);
 
-
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('✅ MongoDB connected');
-    app.listen(port, () => {
-      console.log(`🚀 Server running on port ${port}`);
-    });
-  })
-  .catch((err) => {
-    console.error('❌ MongoDB Connection ERROR:', err.message);
-  });
+// Start server
+app.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
+});
 
 module.exports = app;

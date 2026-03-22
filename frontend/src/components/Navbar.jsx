@@ -34,7 +34,7 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("user");
     dispatch({ type: "LOGOUT" });
-    navigate("/login");
+    navigate("/");
   };
 
   // Check if we should show the "Landing Page" style navbar

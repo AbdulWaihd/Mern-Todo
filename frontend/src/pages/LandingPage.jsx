@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaCheckDouble, FaMagic, FaTasks, FaFilePdf, FaArrowRight, FaGithub, FaLinkedin } from 'react-icons/fa';
+import dashboardImg from '../assets/screenshot-dashboard.png'
+import aiPlannerImg from '../assets/screenshot-ai-planner.png'
+import contactImg from '../assets/screenshot-contact.png'
 import './LandingPage.css';
 
 const LandingPage = () => {
@@ -77,41 +80,33 @@ const LandingPage = () => {
                     
                     {/* REAL APP PREVIEWS */}
                     <div className="preview-grid-lp">
-                        <div className="browser-mockup main-mockup">
+                        <div className="browser-mockup">
                             <div className="browser-header">
                                 <div className="dots"><span></span><span></span><span></span></div>
                                 <div className="address-bar">taskflow.app/dashboard</div>
                             </div>
                             <div className="browser-content">
-                        <div className="browser-mockup main-mockup">
-                            <div className="browser-header">
-                                <div className="dots"><span></span><span></span><span></span></div>
-                                <div className="address-bar">taskflow.app/dashboard</div>
-                            </div>
-                            <div className="browser-content">
-                                <img src="/dashboard_new.png" alt="Taskflow Dashboard" className="mockup-img" />
+                                <img src={dashboardImg} alt="Taskflow Dashboard" className="mockup-img" />
                             </div>
                         </div>
 
-                        <div className="preview-secondary-lp">
-                            <div className="browser-mockup secondary-mockup">
-                                <div className="browser-header">
-                                    <div className="dots"><span></span><span></span><span></span></div>
-                                    <div className="address-bar">taskflow.app/ai-planner</div>
-                                </div>
-                                <div className="browser-content">
-                                    <img src="/planner_new.png" alt="AI Planner" className="mockup-img" />
-                                </div>
+                        <div className="browser-mockup">
+                            <div className="browser-header">
+                                <div className="dots"><span></span><span></span><span></span></div>
+                                <div className="address-bar">taskflow.app/ai-planner</div>
                             </div>
+                            <div className="browser-content">
+                                <img src={aiPlannerImg} alt="AI Smart Planner" className="mockup-img" />
+                            </div>
+                        </div>
 
-                            <div className="browser-mockup secondary-mockup">
-                                <div className="browser-header">
-                                    <div className="dots"><span></span><span></span><span></span></div>
-                                    <div className="address-bar">taskflow.app/contact</div>
-                                </div>
-                                <div className="browser-content">
-                                    <img src="/contact_new.png" alt="Contact Us" className="mockup-img" />
-                                </div>
+                        <div className="browser-mockup">
+                            <div className="browser-header">
+                                <div className="dots"><span></span><span></span><span></span></div>
+                                <div className="address-bar">taskflow.app/contact</div>
+                            </div>
+                            <div className="browser-content">
+                                <img src={contactImg} alt="Contact Us" className="mockup-img" />
                             </div>
                         </div>
                     </div>

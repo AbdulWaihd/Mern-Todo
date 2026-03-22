@@ -96,6 +96,16 @@ const LandingPage = () => {
                                 <img src="/ai_planner_real.png" alt="AI Planner" className="mockup-img" />
                             </div>
                         </div>
+
+                        <div className="browser-mockup">
+                            <div className="browser-header">
+                                <div className="dots"><span></span><span></span><span></span></div>
+                                <div className="address-bar">taskflow.app/contact</div>
+                            </div>
+                            <div className="browser-content">
+                                <img src="/contact_preview.png" alt="Contact Us" className="mockup-img" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

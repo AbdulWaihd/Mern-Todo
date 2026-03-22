@@ -109,104 +109,77 @@
 
 /* BROWSER MOCKUP */
 /* REAL APP PREVIEWS */
-.preview-grid-lp {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+/* PREVIEW SECTION (NEW 2-ROW LAYOUT) */
+.preview-section-lp {
   width: 100%;
-  max-width: 1300px;
+  max-width: 100%;
   margin: 0 auto 60px;
-  padding: 0 40px; /* Desktop padding */
+  padding: 40px 48px; /* High padding to allow glow effect to bleed */
+  box-sizing: border-box;
+  /* Removed overflow: hidden to allow the glow to show correctly */
+}
+
+.preview-row-top {
+  display: flex;
+  flex-direction: row;
+  gap: 48px; /* Increased gap */
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  margin-bottom: 48px; /* Increased gap */
+}
+
+.preview-row-bottom {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   box-sizing: border-box;
 }
 
-@media (max-width: 600px) {
-  .preview-grid-lp {
-    padding: 0 20px;
-  }
+.preview-img-lp {
+  width: 48%;
+  max-height: 320px;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  object-fit: cover;
+  object-position: top left;
+  /* Removed overflow: hidden to ensure the glow isn't clipped */
+  box-sizing: border-box;
 }
 
-@media (min-width: 1024px) {
-  .preview-grid-lp {
-    flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
-  }
+/* AI Planner specifically centered and smaller */
+.preview-img-lp.centered {
+  width: 46%;
+  max-height: 320px;
+  object-position: top;
+  margin: 0 auto;
 }
 
-.browser-mockup {
-    flex: 1;
-    min-width: 0;
-    background: #1e1e2d;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
-    overflow: hidden;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-@media (min-width: 1024px) {
-  .browser-mockup {
-    min-width: 380px; /* Reduced min-width slightly for the others to make room */
-  }
-  .planner-mockup {
-    flex: 1.4; /* Enlarge AI Planner relative to the others */
-    min-width: 520px;
-  }
-}
-
-.browser-mockup:hover {
+.preview-img-lp:hover {
   transform: scale(1.02);
-  border-color: rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.6),
+              0 0 40px rgba(124, 58, 237, 0.3),
+              0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-
-.browser-header {
-    height: 48px;
-    background: #2a2a3c;
-    display: flex;
+@media (max-width: 600px) {
+  .preview-row-top {
+    flex-direction: column;
+    gap: 48px;
     align-items: center;
-    padding: 0 20px;
-    gap: 40px;
-}
-
-.dots {
-    display: flex;
-    gap: 8px;
-}
-
-.dots span {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.dots span:nth-child(1) { background: #ff5f56; }
-.dots span:nth-child(2) { background: #ffbd2e; }
-.dots span:nth-child(3) { background: #27c93f; }
-
-.address-bar {
-    background: rgba(255,255,255,0.05);
-    border-radius: 6px;
-    height: 28px;
-    flex: 1;
-    max-width: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    color: #94a3b8;
-}
-
-.mockup-img {
+  }
+  
+  .preview-img-lp {
     width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    border: 1px solid rgba(124, 58, 237, 0.3);
+    max-height: 280px;
+  }
+
+  .preview-img-lp.centered {
+    width: 100%;
+    margin-top: 48px;
+  }
 }
 
 /* FEATURES */

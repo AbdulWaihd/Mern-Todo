@@ -79,35 +79,13 @@ const LandingPage = () => {
                     <p className="hero-caption">Free forever · No credit card required</p>
                     
                     {/* REAL APP PREVIEWS */}
-                    <div className="preview-grid-lp">
-                        <div className="browser-mockup">
-                            <div className="browser-header">
-                                <div className="dots"><span></span><span></span><span></span></div>
-                                <div className="address-bar">taskflow.app/dashboard</div>
-                            </div>
-                            <div className="browser-content">
-                                <img src={dashboardImg} alt="Taskflow Dashboard" className="mockup-img" />
-                            </div>
+                    <div className="preview-section-lp">
+                        <div className="preview-row-top">
+                            <img src={dashboardImg} alt="Taskflow Dashboard" className="preview-img-lp" />
+                            <img src={contactImg} alt="Contact Us" className="preview-img-lp" />
                         </div>
-
-                        <div className="browser-mockup planner-mockup">
-                            <div className="browser-header">
-                                <div className="dots"><span></span><span></span><span></span></div>
-                                <div className="address-bar">taskflow.app/ai-planner</div>
-                            </div>
-                            <div className="browser-content">
-                                <img src={aiPlannerImg} alt="AI Smart Planner" className="mockup-img" />
-                            </div>
-                        </div>
-
-                        <div className="browser-mockup">
-                            <div className="browser-header">
-                                <div className="dots"><span></span><span></span><span></span></div>
-                                <div className="address-bar">taskflow.app/contact</div>
-                            </div>
-                            <div className="browser-content">
-                                <img src={contactImg} alt="Contact Us" className="mockup-img" />
-                            </div>
+                        <div className="preview-row-bottom">
+                            <img src={aiPlannerImg} alt="AI Smart Planner" className="preview-img-lp centered" />
                         </div>
                     </div>
                 </div>

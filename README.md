@@ -1,100 +1,231 @@
-# ✨ Taskflow: AI-Driven Productivity Platform
+<div align="center">
 
-Taskflow is a high-fidelity MERN stack productivity workspace that leverages **Google Gemini AI** to transform vague goals into prioritized, actionable task plans. Engineered for a professional "Morgen.so" style experience, it automates the cognitive load of planning while providing a premium, distraction-free environment.
+# ✨ Taskflow
+### AI-Powered Task Management Platform
+
+**Turn vague goals into actionable plans — automatically.**
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Taskflow-7c3aed?style=for-the-badge&logo=vercel)](https://mern-todo-ten-gamma.vercel.app)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js)](https://nodejs.org)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)](https://mongodb.com)
+[![Gemini](https://img.shields.io/badge/Google-Gemini%20AI-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+</div>
 
 ---
 
-## 🚀 Key Features
+## 📖 Overview
 
-### 🧠 **Smart AI Planner**
-- **Actionable Plans**: Input goals like "Prepare for exam" and get 4-7 structured subtasks.
-- **Dynamic Estimates**: Includes AI-calculated deadlines and priority rankings.
-- **Goal Grouping**: Automatic hierarchical grouping of tasks for a clean, professional dashboard.
+Taskflow is a full-stack AI-powered productivity platform 
+built with the MERN stack. The standout feature is the 
+**AI Smart Planner** — users type any high-level goal and 
+Google Gemini AI automatically generates a complete, 
+prioritized action plan with deadlines.
 
-### 🎨 **State-of-the-Art UI/UX**
-- **Sleek Sidebar Layout**: Intuitive navigation with goal-based quick-links.
-- **Glassmorphism Design**: High-end aesthetics featuring backdrop blurs and subtle gradients.
-- **Responsive Workspace**: Seamlessly switches between full-width dashboard and mobile-optimized views.
-- **Slide-out Task Drawer**: Modern task creation and editing flow that keeps the workspace focused.
+🔗 **Live:** https://mern-todo-ten-gamma.vercel.app
 
-### 🔐 **Enterprise-Grade Security**
-- **JWT Authentication**: Secure stateless sessions with robust `localStorage` persistence.
-- **Auth Persistence**: Engineered to handle page refreshes and session recovery without losing state.
-- **Protected Routes**: React Router 7 guards ensuring strict access control.
+---
 
-### 📋 **Task Management**
-- **Full CRUD**: Professional task manipulation with instant feedback.
-- **Priority Sorting**: Intelligent ordering (High > Medium > Low) to highlight what matters.
-- **PDF Reporting**: Export entire task lists to professional PDFs using `jsPDF`.
+## 📸 Screenshots
+
+### Dashboard
+![Dashboard](./frontend/src/assets/screenshot-dashboard.webp)
+
+### AI Smart Planner
+![AI Planner](./frontend/src/assets/screenshot-ai-planner.webp)
+
+### Contact Us
+![Contact](./frontend/src/assets/screenshot-contact.webp)
+
+---
+
+## 🚀 Features
+
+### 🤖 AI Smart Planner
+- Type any goal (e.g. *"Prepare for my OS exam"*) and 
+  Gemini AI generates a complete action plan instantly
+- Each subtask includes: title, description, priority 
+  level, estimated time, and suggested deadline
+- Edit, remove, or reorder subtasks before saving
+- Bulk save all subtasks with one click
+- Tasks grouped under parent goal with live progress 
+  tracking (e.g. *3/6 done*)
+- Collapsible goal groups on dashboard
+- Saved AI Goals history panel
+
+### 📋 Task Management
+- Full CRUD — create, read, update, delete todos
+- Priority levels: High, Medium, Low with 
+  color-coded badges
+- Sort by: priority, deadline, creation date
+- Filter by: All, Pending, Completed
+- AI Sort — LLM-based intelligent task prioritization
+
+### 🔐 Authentication & Security
+- JWT-based stateless authentication
+- bcrypt password hashing
+- Protected routes with React Router
+- Session persistence across page refreshes
+- User avatar dropdown for account actions
+
+### 📄 PDF Export
+- Export full task list as a formatted PDF report
+- Shows task status, priority, and deadlines
+- Client-side generation using jsPDF
+
+### 📬 Contact Form
+- Built-in contact page for queries and feedback
+- Form pre-fills logged-in user details
+- Backend route for message handling
+
+### 🎨 UI/UX
+- Premium dark theme with purple accent
+- Fully responsive — desktop and mobile
+- Hamburger menu for sidebar on mobile (< 600px)
+- Glassmorphism design with subtle gradients
+- Purple glow effects on hover
+- Smooth transitions throughout
+- Marketing landing page with app previews
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Frontend**: React 19, Vite, Vanilla CSS (Premium Tokens), React Router 7.
-- **Backend**: Node.js, Express.js.
-- **Database**: MongoDB Atlas with Mongoose ODM.
-- **AI**: Google Generative AI (Gemini 1.5 Flash).
-- **Tools**: jsPDF, React Icons, JWT.
+| Layer | Technology |
+|---|---|
+| Frontend | React 19, Vite, Tailwind CSS, React Router 7 |
+| Backend | Node.js, Express.js |
+| Database | MongoDB Atlas, Mongoose ODM |
+| AI | Google Gemini 1.5 Flash API |
+| Auth | JSON Web Tokens (JWT), bcrypt |
+| PDF | jsPDF |
+| Deployment | Vercel (frontend + backend) |
+
+---
+
+## 🤖 How the AI Feature Works
+```
+User types goal + deadline + optional context
+        ↓
+POST /api/ai/breakdown sends to backend
+        ↓
+Backend sends engineered prompt to Gemini API
+        ↓
+Gemini returns structured JSON with 4-7 subtasks
+        ↓
+Frontend renders editable preview list
+        ↓
+User confirms → POST /api/todos/bulk saves all
+        ↓
+Dashboard shows tasks grouped under parent goal
+```
 
 ---
 
 ## 📂 Project Structure
-
 ```text
-todoApp/
+taskflow/
 ├── backend/
-│   ├── controllers/      # AI and Todo logic
-│   ├── models/           # Mongoose schemas
-│   ├── routes/           # API endpoints
-│   ├── middleware/       # Auth guards (JWT)
-│   └── server.js         # Entry point (Production-optimized)
+│   ├── controllers/
+│   │   ├── todoController.js   # CRUD + bulk insert
+│   │   └── aiController.js     # Gemini API logic
+│   ├── models/
+│   │   └── todoModel.js        # Mongoose schema
+│   ├── routes/
+│   │   ├── todoRoutes.js
+│   │   └── aiRoutes.js
+│   ├── middleware/
+│   │   └── authMiddleware.js   # JWT verification
+│   └── server.js
 └── frontend/
-    ├── src/
-    │   ├── components/   # Navbar, TodoCards, Layout elements
-    │   ├── pages/        # LandingPage, Dashboard (Home), AI Planner
-    │   ├── context/      # AuthState management
-    │   └── App.jsx       # Global Routing & Theme shell
+    └── src/
+        ├── assets/             # App screenshots
+        ├── components/         # Navbar, TodoCard
+        ├── pages/
+        │   ├── LandingPage.jsx
+        │   ├── Home.jsx        # Dashboard
+        │   ├── AiPlanner.jsx
+        │   └── Contact.jsx
+        ├── context/            # Auth state
+        └── App.jsx             # Routing
 ```
 
 ---
 
-## 💼 CV Highlights (For Your Resume)
+## 📦 Getting Started
 
-### **Key Technical Contributions**
-- **AI Integration**: Integrated Google Gemini API to build an automated goal decomposition engine, transforming natural language inputs into structured project plans.
-- **Full-Stack Architecture**: Developed a production-ready MERN application with a secure REST API and a high-performance React frontend.
-- **Security & Session Management**: Scaled authentication logic to include JWT-based persistence, ensuring 100% session stability across page refreshes and route changes.
-- **UI/UX Engineering**: Designed and implemented a custom "High-Fidelity" design system using Vanilla CSS, featuring responsive layouts, glassmorphism, and complex interactive components (sidebars, slide-out drawers).
+### Prerequisites
+- Node.js v18+
+- MongoDB Atlas account (free tier works)
+- Google Gemini API key —
+  get free at [aistudio.google.com](https://aistudio.google.com)
 
----
+### 1. Clone the repo
+```bash
+git clone https://github.com/AbdulWahid/taskflow.git
+cd taskflow
+```
 
-## 📦 Setup & Installation
-
-### 1. Backend Setup
+### 2. Backend setup
 ```bash
 cd backend
 npm install
 ```
-Create `.env`:
-```
+
+Create `backend/.env`:
+```env
 PORT=3000
-MONGO_URI=your_mongodb_uri
-SECRET=your_jwt_secret
-GEMINI_API_KEY=your_key
+MONGO_URI=your_mongodb_connection_string
+SECRET=your_jwt_secret_key
+GEMINI_API_KEY=your_gemini_api_key
+```
+```bash
+npm start
 ```
 
-### 2. Frontend Setup
+### 3. Frontend setup
 ```bash
 cd ../frontend
 npm install
-npm run dev
 ```
-Create `.env`:
-```
+
+Create `frontend/.env`:
+```env
 VITE_API_URL=http://localhost:3000
 ```
+```bash
+npm run dev
+```
+
+App runs at `http://localhost:5173`
 
 ---
 
-**Developed with ❤️ by Sheikh Abdul Wahid**
+## 🌐 Deployment
+
+| Service | Platform | Environment Variables |
+|---|---|---|
+| Frontend | Vercel | `VITE_API_URL` |
+| Backend | Vercel | `MONGO_URI`, `SECRET`, `GEMINI_API_KEY` |
+
+> API keys and secrets are never committed to the
+> repository. All sensitive values are managed via
+> Vercel environment variable dashboard.
+
+---
+
+## 📜 License
+
+MIT License — free to use and modify.
+
+---
+
+<div align="center">
+
+**Developed by Sheikh Abdul Wahid**
+
+[![Live](https://img.shields.io/badge/Live-Visit%20Taskflow-7c3aed?style=for-the-badge&logo=vercel)](https://mern-todo-ten-gamma.vercel.app)
+
+</div>

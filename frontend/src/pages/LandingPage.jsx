@@ -83,7 +83,13 @@ const LandingPage = () => {
                                 <div className="address-bar">taskflow.app/dashboard</div>
                             </div>
                             <div className="browser-content">
-                                <img src="/dashboard_real.png" alt="Taskflow Dashboard" className="mockup-img" />
+                        <div className="browser-mockup main-mockup">
+                            <div className="browser-header">
+                                <div className="dots"><span></span><span></span><span></span></div>
+                                <div className="address-bar">taskflow.app/dashboard</div>
+                            </div>
+                            <div className="browser-content">
+                                <img src="/dashboard_new.png" alt="Taskflow Dashboard" className="mockup-img" />
                             </div>
                         </div>
 
@@ -94,7 +100,7 @@ const LandingPage = () => {
                                     <div className="address-bar">taskflow.app/ai-planner</div>
                                 </div>
                                 <div className="browser-content">
-                                    <img src="/ai_planner_real.png" alt="AI Planner" className="mockup-img" />
+                                    <img src="/planner_new.png" alt="AI Planner" className="mockup-img" />
                                 </div>
                             </div>
 
@@ -104,7 +110,7 @@ const LandingPage = () => {
                                     <div className="address-bar">taskflow.app/contact</div>
                                 </div>
                                 <div className="browser-content">
-                                    <img src="/contact_real.png" alt="Contact Us" className="mockup-img" />
+                                    <img src="/contact_new.png" alt="Contact Us" className="mockup-img" />
                                 </div>
                             </div>
                         </div>
